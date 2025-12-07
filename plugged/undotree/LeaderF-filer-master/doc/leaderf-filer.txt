@@ -1,0 +1,550 @@
+*LeaderF-filer*
+
+
+==============================================================================
+INTRODUCTION                                     *LeaderF-filer-instroduction*
+
+This plugin is an extension of LeaderF, it is used to navigate the files in
+directory.
+
+
+==============================================================================
+REQUIREMENTS                                      *LeaderF-filer-requirements*
+
+- vim7.4.330 or higher.
+- vim compiled with Python support, you can check by using `echo has('python')`
+  or `echo has('python3')` to see if the result is 1.
+
+
+==============================================================================
+OPTIONS                                                *LeaderF-filer-options*
+
+g:Lf_FilerShowHiddenFiles                          *g:Lf_FilerShowHiddenFiles*
+    When enabled, shows hidden files by default.
+
+    Default value: 0
+
+g:Lf_FilerAcceptDirSelectionCmd              *g:Lf_FilerAcceptDirSelectionCmd*
+    Command to execute when accepting selection if directory.
+
+    Default value: 'lcd'
+
+g:Lf_FilerShowCurrentDirDot                      *g:Lf_FilerShowCurrentDirDot*
+    Whether to display `.` for the current directory.
+
+    Default value: 0
+
+g:Lf_FilerUseDefaultInsertMap                  *g:Lf_FilerUseDefaultInsertMap*
+    Use the default key mapping
+
+    Default value: 1
+
+g:Lf_FilerUseDefaultNormalMap                  *g:Lf_FilerUseDefaultNormalMap*
+    Use the default key mapping
+
+    Default value: 1
+
+g:Lf_FilerInsertMap                                      *g:Lf_FilerInsertMap*
+    Customize insert mode mappings.
+
+    Default value: `{}`
+
+g:Lf_FilerNormalMap                                      *g:Lf_FilerNormalMap*
+    Customize normal mode mappings.
+
+    Default value: `{}`
+
+g:Lf_FilerMkdirAutoChdir                            *g:Lf_FilerMkdirAutoChdir*
+    After executing `mkdir`, change the current directory of LeaderF-filer to
+    the created directory.
+
+    Default value: 0
+
+g:Lf_FilerShowPromptPath                            *g:Lf_FilerShowPromptPath*
+    When enabled, the path is displayed at the prompt.
+
+    Default value: 0
+
+g:Lf_FilerOnlyIconHighlight                      *g:Lf_FilerOnlyIconHighlight*
+    When enabled, Only the directory icon is highlighted with a
+    |Lf_hl_filerDir|.
+
+    Default value: 0
+
+==============================================================================
+USAGE                                                    *LeaderF-filer-usage*
+
+------------------------------------------------------------------------------
+COMMANDS                                              *LeaderF-filer-commands*
+
+:LeaderfFiler                                                  *:LeaderfFiler*
+    navigate the files in directory.
+
+
+------------------------------------------------------------------------------
+ARGUMENTS                                            *LeaderF-filer-arguments*
+
+`--auto-cd`                                            *LeaderF-filer-auto-cd*
+    Change the working directory while navigating with LeaderF-filer.
+
+
+==============================================================================
+CUSTOMIZATION                                    *LeaderF-filer-customization*
+
+------------------------------------------------------------------------------
+MAPPINGS                                               *LeaderF-filer-mapping*
+
+You need to define the mapping in normal mode and insert mode respectively.
+See |LeaderF-filer-map-commands| for a list of available commands.
+
+Default mappings:                              *LeaderF-filer-default-mapping*
+
+>
+    " normal mode:
+    let l:default_normal_map = {
+    \   'h':             'open_parent',
+    \   'l':             'open_current',
+    \   '<C-h>':         'open_parent',
+    \   '<C-l>':         'open_current',
+    \   '<C-g>':         'goto_root_marker_dir',
+    \   'I':             'toggle_hidden_files',
+    \   'j':             'down',
+    \   'k':             'up',
+    \   '<Down>':        'down',
+    \   '<Up>':          'up',
+    \   '<F1>':          'toggle_help',
+    \   '<Tab>':         'switch_insert_mode',
+    \   'p':             'preview',
+    \   'q':             'quit',
+    \   'o':             'accept',
+    \   '<CR>':          'accept',
+    \   'x':             'accept_horizontal',
+    \   'v':             'accept_vertical',
+    \   't':             'accept_tab',
+    \   '<2-LeftMouse>': 'accept',
+    \   '<C-Up>':        'page_up_in_preview',
+    \   '<C-Down>':      'page_down_in_preview',
+    \   '<Esc>':         'close_preview_popup',
+    \   's':             'add_selections',
+    \   'a':             'select_all',
+    \   'c':             'clear_selections',
+    \   'O':             'create_file',
+    \   'K':             'mkdir',
+    \   'R':             'rename',
+    \   'C':             'copy',
+    \   'P':             'paste',
+    \   '@':             'change_directory',
+    \   'H':             'history_backward',
+    \   'L':             'history_forward',
+    \}
+
+    " insert mode:
+    let l:default_insert_map = {
+    \   '<C-h>':        'open_parent_or_clear_line',
+    \   '<C-l>':        'open_current',
+    \   '<C-f>':        'toggle_hidden_files',
+    \   '<C-g>':        'goto_root_marker_dir',
+    \   '<Esc>':        'quit',
+    \   '<C-c>':        'quit',
+    \   '<CR>':         'accept',
+    \   '<2-LeftMouse>': 'accept',
+    \   '<C-x>':        'accept_horizontal',
+    \   '<C-]>':        'accept_vertical',
+    \   '<C-t>':        'accept_tab',
+    \   '<C-r>':        'toggle_regex',
+    \   '<BS>':         'backspace',
+    \   '<C-u>':        'clear_line',
+    \   '<C-w>':        'delete_left_word',
+    \   '<Del>':        'delete',
+    \   '<C-v>':        'paste',
+    \   '<S-Insert>':   'paste',
+    \   '<Home>':       'home',
+    \   '<C-b>':        'home',
+    \   '<End>':        'end',
+    \   '<C-e>':        'end',
+    \   '<Left>':       'left',
+    \   '<Right>':      'right',
+    \   '<C-j>':        'down',
+    \   '<C-k>':        'up',
+    \   '<Up>':         'prev_history',
+    \   '<Down>':       'next_history',
+    \   '<C-p>':        'preview',
+    \   '<Tab>':        'switch_normal_mode',
+    \   '<C-Up>':       'page_up_in_preview',
+    \   '<C-Down>':     'page_down_in_preview',
+    \   '<ScroollWhellUp>': 'up3',
+    \   '<ScroollWhellDown>': 'down3',
+    \   '<C-s>':        'add_selections',
+    \   '<C-a>':        'select_all',
+    \   '<F3>':         'clear_selections',
+    \}
+<
+
+The settings for these mappings are activated in |g:Lf_FilerUseDefaultInsertMap|
+and |g:Lf_FilerUseDefaultNormalMap|.
+
+Customizable key mapping using |g:Lf_FilerInsertMap| and |g:Lf_FilerNormalMap|.
+
+The setting method is the same as nnoremap.
+When `{"<C-h>": "nop"}` is set, it performs the same operation as
+`:nnoremap <C-h> <Nop>`.
+That is, you can remove the default `<C-h>` mapping.
+
+
+For example, to customize while using the default mappings:
+>
+    " Default value 1
+    "let g:Lf_FilerUseDefaultInsertMap = 1
+
+    let g:Lf_FilerNormalMap = {
+    \   '<C-h>': 'nop',
+    \   '<C-l>': 'nop',
+    \   'i':     'switch_insert_mode',
+    \   '.':     'toggle_hidden_files',
+    \   '~':     'goto_root_marker_dir',
+    \}
+<
+
+
+For example, to map everything yourself without using the default mapping:
+>
+    let g:Lf_FilerUseDefaultNormalMap = 0
+    let g:Lf_FilerNormalMap = {
+    \   'h':             'open_parent',
+    \   'l':             'open_current',
+    \   '<C-h>':         'open_parent',
+    \   '<C-l>':         'open_current',
+    \   '~':             'goto_root_marker_dir',
+    \   '.':             'toggle_hidden_files',
+    \   'j':             'down',
+    \   'k':             'up',
+    \   '<F1>':          'toggle_help',
+    \   '<Tab>':         'switch_insert_mode',
+    \   'i':             'switch_insert_mode',
+    \   'p':             'preview',
+    \   'q':             'quit',
+    \   '<C-q>':         'quit',
+    \   'o':             'accept',
+    \   '<CR>':          'accept',
+    \   'x':             'accept_horizontal',
+    \   'v':             'accept_vertical',
+    \   't':             'accept_tab',
+    \   '<C-Up>':        'page_up_in_preview',
+    \   '<C-Down>':      'page_down_in_preview',
+    \   '<Esc>':         'close_preview_popup',
+    \   's':             'add_selections',
+    \   '<C-a>':         'select_all',
+    \   '<F3>':          'clear_selections',
+    \   'K':             'mkdir',
+    \   'R':             'rename',
+    \   'C':             'copy',
+    \   'P':             'paste',
+    \   'O':             'create_file',
+    \   '@':             'change_directory',
+    \   'H':             'history_backward',
+    \   'L':             'history_forward',
+    \   'd':             'remove_trash',
+    \   'D':             'remove_trash_force',
+    \}
+
+    let g:Lf_FilerUseDefaultInsertMap = 0
+    let g:Lf_FilerInsertMap = {
+    \   '<C-h>':        'open_parent_or_backspace',
+    \   '<C-l>':        'open_current',
+    \   '<C-y>':        'toggle_hidden_files',
+    \   '<C-g>':        'goto_root_marker_dir',
+    \   '<Esc>':        'quit',
+    \   '<C-c>':        'quit',
+    \   '<CR>':         'accept',
+    \   '<C-s>':        'accept_horizontal',
+    \   '<C-v>':        'accept_vertical',
+    \   '<C-t>':        'accept_tab',
+    \   '<C-r>':        'toggle_regex',
+    \   '<BS>':         'backspace',
+    \   '<C-u>':        'clear_line',
+    \   '<C-w>':        'delete_left_word',
+    \   '<C-d>':        'delete',
+    \   '<C-o>':        'paste',
+    \   '<C-a>':        'home',
+    \   '<C-e>':        'end',
+    \   '<C-b>':        'left',
+    \   '<C-f>':        'right',
+    \   '<C-j>':        'down',
+    \   '<C-k>':        'up',
+    \   '<C-p>':        'prev_history',
+    \   '<C-n>':        'next_history',
+    \   '<C-q>':        'preview',
+    \   '<Tab>':        'switch_normal_mode',
+    \   '<C-Up>':       'page_up_in_preview',
+    \   '<C-Down>':     'page_down_in_preview',
+    \   '<ScroollWhellUp>': 'up3',
+    \   '<ScroollWhellDown>': 'down3',
+    \}
+<
+
+
+You can customize the normal mode mapping using |g:Lf_NormalMap|.
+
+e,g, `B` calls `:LeaderfBookmark`:
+>
+    let g:Lf_NormalMap = get(g:, 'Lf_NormalMap', {})
+    let g:Lf_NormalMap = {'Filer':   [['B', ':LeaderfBookmark<CR>']]}
+<
+
+------------------------------------------------------------------------------
+MAP COMMANDS                                      *LeaderF-filer-map-commands*
+
+List of command names that can be used in |g:Lf_FilerInsertMap| and
+|g:Lf_FilerNormalMap|.
+
+
+BOTH MODE                                    *LeaderF-filer-map-commands-both*
+
+List of command names that can be used in both |g:Lf_FilerInsertMap| and
+|g:Lf_FilerNormalMap|.
+
+    nop
+        Does nothing like |<Nop>|.
+
+    quit
+        Quit from LeaderF.
+
+    up
+        move the cursor downward in the result window.
+
+    down
+        move the cursor upward in the result window.
+
+    accept
+        Open the file under cursor or create a file with the input pattern
+        file name (when empty results).
+
+    accept_horizontal
+        Open the file under cursor in horizontal split window.
+
+    accept_vertical
+        Open the file under cursor in vertical split window.
+
+    accept_tab
+        Open the file under cursor new tabpage.
+
+    add_selections
+        select multiple result.
+
+    select_all
+        select all result.
+
+    clear_selections
+        clear all selections.
+
+    preview
+        Preview the result.
+
+    page_up_in_preview
+        Scroll up in the popup preview window.
+
+    page_down_in_preview
+        Scroll down in the popup preview window.
+
+    close_preview_popup
+        Close popup preview window.
+
+    open_parent
+        The prompt string is cleared and show files files in the parent
+        directory.
+
+    open_current
+        Show files in directory under cursor or open the file under the cursor.
+
+    toggle_hidden_files
+        Toggle show hidden files.
+
+    goto_root_marker_dir
+        Show files of directory where |g:Lf_RootMarkers| exists.
+
+    change_directory
+        Change the current directory to cwd of LeaderF-filer.
+        NOTE: Use |chdir()|, |lcd| or |cd|.
+
+
+NORMAL MODE ONLY                           *LeaderF-filer-map-commands-normal*
+
+List of command names that can be used only by |g:Lf_FilerNormalMap|.
+
+    toggle_help
+        Toggle this help.
+
+    switch_insert_mode
+        Switch to insert mode.
+
+    open_parent_or_backspace
+        Show files in parent directory or delete the preceding character in
+        the prompt if a pattern wasentered.
+
+    open_parent_or_clear_line
+        Show files in parent directory or clears the prompt if a pattern was
+        entered.
+
+    history_backward
+        Go backwards in history.
+
+    history_forward
+        Go forwards in history.
+
+    mkdir
+        Create a directory.
+        See |g:Lf_FilerMkdirAutoChdir|
+
+    create_file
+        Create a file.
+
+    rename
+        Rename files and directories.
+        NOTE: Does not support multiple files.
+
+    copy
+        Copy files and directories under cursor.
+
+        See `paste` command.
+        NOTE: Does not support multiple files.
+
+    paste
+        Paste the file or directory copied by the copy command to cwd of
+        LeaderF-filer.
+
+        See `copy` command.
+
+    remove
+    remove_force
+        Remove files.
+        If you add `_force`, it will be removed without confirmation.
+
+    remove_trash
+    remove_trash_force
+        Remove files and put in the trash
+        NOTE: Required Send2Trash (https://pypi.org/project/Send2Trash/)
+        If you add `_force`, it will be removed without confirmation.
+
+
+
+INSERT MODE ONLY                           *LeaderF-filer-map-commands-insert*
+
+List of command names that can be used only by |g:Lf_FilerInsertMap|.
+
+    toggle_regex
+        Switch between fuzzy search mode and regex mode.
+
+    switch_normal_mode
+        Switch to normal mode.
+
+    paste
+        Paste from clipboard.
+
+    clear_line
+        Clear the prompt.
+
+    delete_left_word
+        Delete the word before the cursor in the prompt.
+
+    prev_history`/`next_history
+        Recall last/next input pattern from history.
+
+    backspace
+        Delete the preceding character in the prompt.
+
+    delete
+        Delete the current character in the prompt.
+
+    home
+        Move the cursor to the begin of the prompt.
+
+    end
+        Move the cursor to the end of the prompt.
+
+    left
+        Move the cursor one character to the left.
+
+    right
+        Move the cursor one character to the right.
+
+------------------------------------------------------------------------------
+HIGHLIGHTS~
+
+Lf_hl_filerPath                                              *Lf_hl_filerPath*
+    default: `highlight def link Lf_hl_filerPath Normal`
+
+Lf_hl_filerDir                                                *Lf_hl_filerDir*
+    default: `highlight def link Lf_hl_filerDir Identifier`
+
+Lf_hl_filerNoContent                                    *Lf_hl_filerNoContent*
+    default: `highlight def link Lf_hl_filerNoContent Comment`
+
+
+==============================================================================
+FAQ                                                        *LeaderF-filer-faq*
+
+Q: I get an error when the path contains spaces, what should I do?
+
+A: Please surround it with a `""` or `''`.
+   e.g.)
+>
+        nnoremap <silent> <C-e> :<C-u><C-r>=printf(
+        \       "Leaderf filer '%s'",
+        \       substitute(expand('%:p:h'), '\\', '/', 'g'))<CR><CR>
+<
+
+==============================================================================
+CHANGELOG                                            *LeaderF-filer-changelog*
+
+0.1.2   2020-04-30
+    - Add |Lf_FilerOnlyIconHighlight| options.
+
+0.1.1   2020-04-24
+    - Add `remove` command.
+    - Add `remove_force` command.
+    - Add `remove_trash` command.
+    - Add `remove_trash_force` command.
+
+0.1.1   2020-04-23
+    - Add `history_backward` command.
+    - Add `history_forward` command.
+
+0.1.0   2020-04-07
+    - Add |g:Lf_FilerShowPromptPath| options.
+
+0.0.9   2020-03-31
+    - Remove the dependency on vim-devicons
+        - See https://github.com/Yggdroot/LeaderF/commit/e039
+
+0.0.8   2020-03-31
+    - Use LeaderF's icon display function.
+    - Remove `g:Lf_FilerShowDevIcons`
+        - Use |g:Lf_ShowDevIcons| instead.
+
+0.0.7   2020-03-05
+    - Add `change_directory` command.
+
+0.0.6   2020-03-04
+    - Add `create_file` command.
+
+0.0.5   2020-02-27
+    - Add `copy` command.
+    - Add `paste` command.
+
+0.0.4   2020-02-26
+    - Add `rename` command.
+
+0.0.3   2020-02-25
+    - Add `mkdir` command.
+    - Add |g:Lf_FilerMkdirAutoChdir| options.
+
+0.0.2   2020-02-21
+    - Changed the behavior of `open_parent` command.
+    - Add `open_parent_or_clear_line` command.
+    - Add `open_parent_or_backspace` command.
+
+0.0.1   2020-02-21
+    - Initial version.
+
+==============================================================================
+vim:tw=78:sw=4:sts=4:ts=4:ft=help:norl:et
