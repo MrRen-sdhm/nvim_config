@@ -6,7 +6,8 @@ require("tokyonight").setup({
   transparent = false,
 
   plugins = {
-      -- ["which-key"] = false, -- disable color for which-key
+      ["which-key"] = false, -- disable color for which-key
+      ["gitgutter"] = false, -- disable color for gitgutter
       -- all = false,  -- disable color for all plugin
   },
 

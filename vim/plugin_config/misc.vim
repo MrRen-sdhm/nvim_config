@@ -124,11 +124,11 @@ nmap <space>k <Plug>(easymotion-k)
 nmap <space>e <Plug>(easymotion-bd-e)
 nmap <space>w <Plug>(easymotion-bd-w)
 
-" undotree
+" undotree =====================================================================
 set undofile " 启用全局undo，重新打开文件也可恢复历史修改
 let g:undotree_SetFocusWhenToggle = 1
 
-" vim-tmux-navigator
+" vim-tmux-navigator ===========================================================
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <M-Left>  :TmuxNavigateLeft<cr>
@@ -137,7 +137,7 @@ nnoremap <M-Up>    :TmuxNavigateUp<cr>
 nnoremap <M-Right> :TmuxNavigateRight<cr>
 nnoremap <M-/>     :TmuxNavigatePrevious<cr>
 
-" vim-bookmarks
+" vim-bookmarks ================================================================
 nmap ml <Plug>BookmarkShowAll
 nmap mr <Plug>BookmarkClear
 nmap mc <Plug>BookmarkClear
@@ -180,16 +180,19 @@ let g:gitgutter_diff_base = 'HEAD'
 " 行号彩色显示，monokai主题中行号栏的默认背景色为236
 set signcolumn=no " 不可使用signcolumn=number
 let g:gitgutter_highlight_linenrs=1
-highlight GitGutterAddLineNr ctermfg=51 ctermbg=236
-highlight GitGutterChangeLineNr ctermfg=DarkRed ctermbg=236
-highlight GitGutterDeleteLineNr ctermfg=DarkRed ctermbg=236
-highlight GitGutterChangeDeleteLineNr ctermfg=DarkRed ctermbg=236
 
-" 标志彩色显示
-highlight GitGutterAdd ctermfg=51
-highlight GitGutterChange ctermfg=DarkRed
-highlight GitGutterDelete ctermfg=DarkRed
-highlight GitGutterChengeDelete ctermfg=DarkRed
+" 行号颜色配置
+" 蓝色-添加 橙色-修改 红色-删除 紫色-修改+删除
+highlight GitGutterAddLineNr          ctermfg=51  ctermbg=236 guifg=#00d7ff guibg=#303030
+highlight GitGutterChangeLineNr       ctermfg=202 ctermbg=236 guifg=#ff5f00 guibg=#303030
+highlight GitGutterDeleteLineNr       ctermfg=9   ctermbg=236 guifg=#ff0000 guibg=#303030
+highlight GitGutterChangeDeleteLineNr ctermfg=165 ctermbg=236 guifg=#d700ff guibg=#303030
+
+" signcol颜色显示
+highlight GitGutterAdd                ctermfg=51      guifg=#00d7ff
+highlight GitGutterChange             ctermfg=DarkRed guifg=#ff0000
+highlight GitGutterDelete             ctermfg=DarkRed guifg=#ff0000
+highlight GitGutterChangeDelete       ctermfg=DarkRed guifg=#ff0000
 
 " 折叠未修改区域
 nmap <Leader>hf :GitGutterFold<CR>

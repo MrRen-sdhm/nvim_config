@@ -158,7 +158,7 @@ let g:gruvbox_material_foreground = 'original'
 " colorscheme vim-monokai-tasty
 
 " set notermguicolors
-colorscheme molokai
+" colorscheme molokai
 
 " todo/fixme等高亮
 hi Todo ctermbg=darkred guibg=#df0000
